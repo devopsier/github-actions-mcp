@@ -77,5 +77,6 @@ The server can be configured using the `settings.json` file in your VS Code work
 }
 ```
 
+
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
