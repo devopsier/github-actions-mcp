@@ -77,6 +77,23 @@ The server can be configured using the `settings.json` file in your VS Code work
 }
 ```
 
+## Contributing
+
+We welcome contributions to the GitHub Actions MCP Server project! To contribute, please follow these steps:
+
+1. Fork the repository on GitHub.
+2. Create a new branch for your feature or bugfix:
+   ```bash
+   git checkout -b my-feature-branch
+   ```
+3. Make your changes and commit them with clear and concise messages.
+4. Push your branch to your forked repository:
+   ```bash
+   git push origin my-feature-branch
+   ```
+5. Open a pull request to the main repository and provide a detailed description of your changes.
+
+For more details, see the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
