@@ -1,5 +1,6 @@
 // src/github/client.ts
 import { Octokit } from 'octokit';
+import JSZip from 'jszip';
 
 export interface GitHubClientOptions {
     type: 'cloud' | 'enterprise';
@@ -118,12 +119,32 @@ export class GitHubClient {
     }
 
     async getWorkflowRunLogs(owner: string, repo: string, runId: number): Promise<string> {
-        const { data } = await this.octokit.rest.actions.downloadWorkflowRunLogs({
+        const response = await this.octokit.rest.actions.downloadWorkflowRunLogs({
             owner,
             repo,
             run_id: runId
         });
-        return data as string; // Casts the logs content to string
+
+        // The response contains a redirect URL to a zip file
+        const logsResponse = await fetch(response.url);
+        const logsBuffer = await logsResponse.arrayBuffer();
+
+        // Use JSZip to extract the logs from the zip file
+        const zip = new JSZip();
+        const contents = await zip.loadAsync(logsBuffer);
+
+        // Combine all log files into a single string
+        let combinedLogs = '';
+
+        // Process each file in the zip
+        for (const [filename, file] of Object.entries(contents.files)) {
+            if (!(file as JSZip.JSZipObject).dir) {
+                const content = await (file as JSZip.JSZipObject).async('string');
+                combinedLogs += `=== ${filename} ===\n${content}\n\n`;
+            }
+        }
+
+        return combinedLogs;
     }
 
     // Add more GitHub API methods as needed
